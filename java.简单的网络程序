@@ -1,0 +1,63 @@
+// 服务器部分：
+import java.io.*;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+public class TcpServer {
+    // 相关服务器 API 使用
+    private static final int PORT = 9999;
+    public static void main(String[] args) {
+        // 服务器创建
+        // 绑定本机端口号，因为服务器是在本机启动的
+        // 所以默认绑定 IP 就是本机的 IP
+        try {
+            ServerSocket server = new ServerSocket(PORT);
+            // 接收到从客户端发来的信息
+            Socket socket = server.accept();
+            // 输入流接收
+            InputStream inputStream = socket.getInputStream();
+            InputStreamReader isr = new InputStreamReader(inputStream);
+            // 解析流
+            // 缓冲字符输入流
+            BufferedReader reader = new BufferedReader(isr);
+            // 读取操作
+            String data = null;
+            while ((data = reader.readLine()) != null) {
+                System.out.println(data);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+
+        }
+    }
+}
+
+
+// 客户端部分
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.net.Socket;
+
+public class TcpClient {
+
+    private static final String HOST = "localhost";
+    private static final int PORT = 9999;
+
+    // 客户端
+    public static void main(String[] args) {
+        try {
+            Socket socket = new Socket(HOST, PORT);
+            OutputStream os = socket.getOutputStream();
+            // 参数一：自动刷新
+            PrintWriter pw = new PrintWriter(os, true);
+            pw.println("hello,");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+
+        }
+    }
+}
