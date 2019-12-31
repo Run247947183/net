@@ -1,0 +1,24 @@
+class Solution {
+    public int numEquivDominoPairs(int[][] dominoes) {
+        Map<String, Integer> map = new HashMap<>();
+        int count = 0;
+        for (int i = 0; i < dominoes.length; i++) {
+            // 利用字符串来区别
+            // 注意：此处已经将等价和相同的情况都列入
+            // 按照大小排序好了，所以之后的 str 比较时就不用考虑等价和相同两种情况
+            String str = dominoes[i][1] > dominoes[i][0] ? 
+                dominoes[i][0] + "" + dominoes[i][1] :
+                dominoes[i][1] + "" + dominoes[i][0];
+            if (map.containsKey(str)) {
+                map.put(str, map.get(str) + 1);
+                // 因为之前如果存在一对，再来一个相似的
+                // 那么就是三对多米诺骨牌
+                // 所以加的数量是添加 1 后的map里的多米诺骨牌数量
+                count += map.get(str);
+            } else {
+                map.put(str, 0);
+            }
+        }
+        return count;
+    }
+}
